@@ -26,6 +26,7 @@ SlamGmapping::SlamGmapping():
 }
 
 void SlamGmapping::init() {
+    
     gsp_ = new GMapping::GridSlamProcessor();
 
     gsp_laser_ = nullptr;
@@ -37,10 +38,10 @@ void SlamGmapping::init() {
     base_frame_ = "base_link";
     map_frame_ = "map";
     odom_frame_ = "odom";
-    transform_publish_period_ = 0.05;
+    transform_publish_period_ =  0.05;
 
     map_update_interval_ = tf2::durationFromSec(0.5);
-    maxUrange_ = 80.0;  maxRange_ = 0.0;
+    maxUrange_ = 10.0;  maxRange_ = 15.0;
     minimum_score_ = 0;
     sigma_ = 0.05;
     kernelSize_ = 1;
@@ -55,14 +56,14 @@ void SlamGmapping::init() {
     str_ = 0.1;
     stt_ = 0.2;
     linearUpdate_ = 1.0;
-    angularUpdate_ = 0.5;
+    angularUpdate_ = 0.35 ;
     temporalUpdate_ = 1.0;
-    resampleThreshold_ = 0.5;
+    resampleThreshold_ = 0.5; 
     particles_ = 30;
-    xmin_ = -10.0;
-    ymin_ = -10.0;
-    xmax_ = 10.0;
-    ymax_ = 10.0;
+    xmin_ = -40.0;
+    ymin_ = -40.0;
+    xmax_ = 40.0;
+    ymax_ = 40.0;
     delta_ = 0.05;
     occ_thresh_ = 0.25;
     llsamplerange_ = 0.01;
@@ -225,8 +226,10 @@ bool SlamGmapping::initMapper(const sensor_msgs::msg::LaserScan::ConstSharedPtr 
     GMapping::OrientedPoint gmap_pose(0, 0, 0);
 
     // setting maxRange and maxUrange here so we can set a reasonable default
-    maxRange_ = scan->range_max - 0.01;
-    maxUrange_ = maxRange_;
+
+    // Avoid reassigning maxRange_ and maxUrange_ in the GMapping constructor
+    //maxRange_ = scan->range_max - 0.01; 
+    //maxUrange_ = maxRange_;
 
     // The laser must be called "FLASER".
     // We pass in the absolute value of the computed angle increment, on the
