@@ -18,11 +18,11 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
     if (score>m_minimumScore){
       it->pose=corrected;
     } else {
-	if (m_infoStream){
-	  m_infoStream << "Scan Matching Failed, using odometry. Likelihood=" << l <<std::endl;
-	  m_infoStream << "lp:" << m_lastPartPose.x << " "  << m_lastPartPose.y << " "<< m_lastPartPose.theta <<std::endl;
-	  m_infoStream << "op:" << m_odoPose.x << " " << m_odoPose.y << " "<< m_odoPose.theta <<std::endl;
-	}
+	// if (m_infoStream){
+	//   m_infoStream << "Scan Matching Failed, using odometry. Likelihood=" << l <<std::endl;
+	//   m_infoStream << "lp:" << m_lastPartPose.x << " "  << m_lastPartPose.y << " "<< m_lastPartPose.theta <<std::endl;
+	//   m_infoStream << "op:" << m_odoPose.x << " " << m_odoPose.y << " "<< m_odoPose.theta <<std::endl;
+	// }
     }
 
     m_matcher.likelihoodAndScore(s, l, it->map, it->pose, plainReading);
@@ -35,8 +35,8 @@ inline void GridSlamProcessor::scanMatch(const double* plainReading){
     m_matcher.invalidateActiveArea();
     m_matcher.computeActiveArea(it->map, it->pose, plainReading);
   }
-  if (m_infoStream)
-    m_infoStream << "Average Scan Matching Score=" << sumScore/m_particles.size() << std::endl;	
+  // if (m_infoStream)
+  //   m_infoStream << "Average Scan Matching Score=" << sumScore/m_particles.size() << std::endl;	
 }
 
 inline void GridSlamProcessor::normalize(){
@@ -148,7 +148,7 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
     hasResampled = true;
   } else {
     int index=0;
-    std::cerr << "Registering Scans:";
+    //std::cerr << "Registering Scans:";
     TNodeVector::iterator node_it=oldGeneration.begin();
     for (ParticleVector::iterator it=m_particles.begin(); it!=m_particles.end(); it++){
       //create a new node in the particle tree and add it to the old tree
@@ -168,7 +168,7 @@ inline bool GridSlamProcessor::resample(const double* plainReading, int adaptSiz
       node_it++;
       
     }
-    std::cerr  << "Done" <<std::endl;
+    // std::cerr  << "Done" <<std::endl;
     
   }
   //END: BUILDING TREE
